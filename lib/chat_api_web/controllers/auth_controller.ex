@@ -16,7 +16,7 @@ defmodule ChatApiWeb.AuthController do
   end
 
   def auth_fb(conn, %{"auth" => user_params}) do
-    user = API.get_fb_user(user_params[:fb_id])
+    user = API.get_fb_user(user_params["fb_id"])
     auth(conn, user, user_params)
   end
 

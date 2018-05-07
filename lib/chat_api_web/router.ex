@@ -37,6 +37,7 @@ defmodule ChatApiWeb.Router do
   scope "/api", ChatApiWeb do
     pipe_through [:browser, :api, :auth]
     resources "/users", UserController, except: [:new, :edit]
+    resources "/chats", ChatController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.

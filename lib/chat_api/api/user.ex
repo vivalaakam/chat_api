@@ -6,6 +6,7 @@ defmodule ChatApi.API.User do
     field :fb_id, :string
     field :fb_token, :string
 
+    many_to_many :chats,  ChatApi.API.Chat, join_through: "chat_users"
 
     timestamps()
   end
