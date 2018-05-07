@@ -16,4 +16,9 @@ defmodule ChatApiWeb.AuthView do
       name: user.name
     }
   end
+
+  def render("logout.json", _params) do
+    %{
+    }
+  end
 end

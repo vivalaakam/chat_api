@@ -27,6 +27,7 @@ defmodule ChatApiWeb.Router do
 
     get "/", PageController, :index
     post "/auth_fb", AuthController, :auth_fb
+    delete "/logout", AuthController, :logout
 
     pipe_through [:auth]
     get "/me", AuthController, :me

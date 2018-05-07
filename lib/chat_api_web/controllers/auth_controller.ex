@@ -34,4 +34,12 @@ defmodule ChatApiWeb.AuthController do
     |> assign(:current_user, user)
     |> render("user.json", user: user, token: jwt)
   end
+
+  def logout(conn, _params) do
+    # Sign out the user
+    conn
+    |> put_status(200)
+    |> Guardian.Plug.sign_out(conn)
+    |> render("logout.json")
+  end
 end

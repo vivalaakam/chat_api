@@ -4,6 +4,8 @@ defmodule ChatApi.API.User do
   schema "users" do
     field :name, :string
     field :fb_id, :string
+    field :fb_token, :string
+
 
     timestamps()
   end
@@ -11,7 +13,7 @@ defmodule ChatApi.API.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :fb_id])
+    |> cast(attrs, [:name, :fb_id, :fb_token])
     |> validate_required([:name])
   end
 end
