@@ -3,6 +3,7 @@ defmodule ChatApiWeb.ChatController do
 
   alias ChatApi.API
   alias ChatApi.API.Chat
+  alias ChatApi.API.ChatMessage
   alias ChatApi.API.User
 
   action_fallback ChatApiWeb.FallbackController
@@ -25,8 +26,8 @@ defmodule ChatApiWeb.ChatController do
   end
 
   def show(conn, %{"id" => id}) do
-    chat = API.get_chat!(id)
-    render(conn, "show.json", chat: chat)
+    chat = API.get_chat_with_messages!(id)
+    render(conn, "show_messages.json", chat: chat)
   end
 
   def update(conn, %{"id" => id, "chat" => chat_params}) do
@@ -41,6 +42,28 @@ defmodule ChatApiWeb.ChatController do
     chat = API.get_chat!(id)
     with {:ok, %Chat{}} <- API.delete_chat(chat) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  def messages(conn, %{"id" => id}) do
+    messages = API.get_chat_messages!(id)
+    render(conn, "messages.json", messages: messages)
+  end
+
+  def message(conn, %{"id" => id, "message" => message_params}) do
+    chat = API.get_chat!(id)
+
+    current_user = conn
+                   |> Guardian.Plug.current_resource
+
+    message_params = Map.put(message_params, "chat", chat)
+    message_params = Map.put(message_params, "sender", current_user)
+
+
+    with {:ok, %ChatMessage{} = message} <- API.create_message(message_params) do
+      conn
+      |> put_status(:created)
+      |> render("message.json", message: message)
     end
   end
 end

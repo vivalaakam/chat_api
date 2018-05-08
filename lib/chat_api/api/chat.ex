@@ -8,8 +8,8 @@ defmodule ChatApi.API.Chat do
     field :is_private, :boolean, default: false
     field :name, :string
 
+    has_many :messages, ChatApi.API.ChatMessage
     many_to_many :users, ChatApi.API.User, join_through: "chat_users"
-
 
     timestamps()
   end

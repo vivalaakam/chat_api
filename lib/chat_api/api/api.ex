@@ -9,6 +9,7 @@ defmodule ChatApi.API do
   alias ChatApi.API.User
   alias ChatApi.API.Chat
   alias ChatApi.API.ChatUser
+  alias ChatApi.API.ChatMessage
 
   @doc """
   Returns the list of users.
@@ -154,6 +155,20 @@ defmodule ChatApi.API do
   """
   def get_chat!(id), do: Repo.get!(Chat, id)
 
+  def get_chat_with_messages!(id) do
+    Chat
+    |> preload(:messages)
+    |> Repo.get!(id)
+
+  end
+
+  def get_chat_messages!(id) do
+    ChatMessage
+    |> where(chat_id: ^id)
+    |> Repo.all()
+  end
+
+
   @doc """
   Creates a chat.
 
@@ -169,6 +184,12 @@ defmodule ChatApi.API do
   def create_chat(attrs \\ %{}) do
     %Chat{}
     |> Chat.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_message(attrs \\ %{}) do
+    %ChatMessage{}
+    |> ChatMessage.changeset(attrs)
     |> Repo.insert()
   end
 

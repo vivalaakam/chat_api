@@ -11,8 +11,33 @@ defmodule ChatApiWeb.ChatView do
   end
 
   def render("chat.json", %{chat: chat}) do
-    %{id: chat.id,
+    %{
+      id: chat.id,
       name: chat.name,
-      is_private: chat.is_private}
+      is_private: chat.is_private
+    }
+  end
+
+  def render("show_messages.json", %{chat: chat}) do
+    %{
+      data: %{
+        id: chat.id,
+        name: chat.name,
+        is_private: chat.is_private,
+        messages: render_many(chat.messages, ChatApiWeb.MessageView, "message.json")
+      }
+    }
+  end
+
+  def render("messages.json", %{messages: messages}) do
+    %{
+      data:  render_many(messages, ChatApiWeb.MessageView, "message.json")
+    }
+  end
+
+  def render("message.json", %{message: message}) do
+    %{
+      data:  render_one(message, ChatApiWeb.MessageView, "message.json")
+    }
   end
 end
