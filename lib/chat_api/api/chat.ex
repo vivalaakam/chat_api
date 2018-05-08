@@ -7,6 +7,7 @@ defmodule ChatApi.API.Chat do
   schema "chats" do
     field :is_private, :boolean, default: false
     field :name, :string
+    field :hash, :string
 
     has_many :messages, ChatApi.API.ChatMessage
     many_to_many :users, ChatApi.API.User, join_through: "chat_users"
@@ -18,7 +19,7 @@ defmodule ChatApi.API.Chat do
   @doc false
   def changeset(chat, attrs) do
     chat
-    |> cast(attrs, [:name, :is_private])
+    |> cast(attrs, [:name, :is_private, :hash])
     |> put_assoc(:users, parse_users(attrs))
     |> validate_required([:name, :is_private])
   end

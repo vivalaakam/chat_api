@@ -167,6 +167,14 @@ defmodule ChatApi.API do
   """
   def get_chat!(id), do: Repo.get!(Chat, id)
 
+  def get_chat_by_hash!(hash) do
+    Repo.one(
+      Chat
+      |> where(hash: ^hash)
+      |> limit(1)
+    )
+  end
+
   def get_chat_with_messages!(id) do
     messages = fn chat_ids ->
       ChatMessage

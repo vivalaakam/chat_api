@@ -17,12 +17,35 @@ defmodule ChatApiWeb.ChatController do
   end
 
   def create(conn, %{"chat" => chat_params}) do
-    with {:ok, %Chat{} = chat} <- API.create_chat(chat_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", chat_path(conn, :show, chat))
-      |> render("show.json", chat: chat)
+    hash = Enum.sort(chat_params["users"])
+    hash = Base.encode16(:erlang.md5(hash), case: :lower)
+    if chat_params["is_private"] == true do
+      chat = API.get_chat_by_hash!(hash)
+      IO.inspect(!chat)
+      if !chat do
+        chat_params = Map.put(chat_params, "hash", hash)
+        IO.inspect(chat_params)
+        with {:ok, %Chat{} = chat} <- API.create_chat(chat_params) do
+          create_done(conn, chat)
+        end
+      else
+        create_done(conn, chat)
+      end
+    else
+      chat_params = Map.put(chat_params, "hash", hash)
+
+      with {:ok, %Chat{} = chat} <- API.create_chat(chat_params) do
+        create_done(conn, chat)
+      end
     end
+  end
+
+  def create_done(conn, chat) do
+    chat = API.get_chat_with_messages!(chat.id)
+    conn
+    |> put_status(:created)
+    |> put_resp_header("location", chat_path(conn, :show, chat))
+    |> render("show_messages.json", chat: chat)
   end
 
   def show(conn, %{"id" => id}) do
