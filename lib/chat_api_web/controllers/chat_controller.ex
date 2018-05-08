@@ -61,6 +61,17 @@ defmodule ChatApiWeb.ChatController do
 
 
     with {:ok, %ChatMessage{} = message} <- API.create_message(message_params) do
+      ChatApiWeb.Endpoint.broadcast(
+        "chat:" <> message.chat_id,
+        "on_message",
+        %{
+          id: message.id,
+          message: message.message,
+          inserted_at: message.inserted_at,
+          sender_id: message.sender_id
+        }
+      )
+
       conn
       |> put_status(:created)
       |> render("message.json", message: message)
