@@ -134,7 +134,8 @@ defmodule ChatApi.API do
            join: u in ChatUser,
            on: c.id == u.chat_id,
            where: u.user_id == ^user.id,
-           select: c
+           select: c,
+           preload: [:users]
 
     Repo.all(query)
   end
@@ -156,18 +157,28 @@ defmodule ChatApi.API do
   def get_chat!(id), do: Repo.get!(Chat, id)
 
   def get_chat_with_messages!(id) do
+    messages = fn chat_ids ->
+      ChatMessage
+      |> where([c], c.chat_id in ^chat_ids)
+      |> order_by(desc: :inserted_at)
+      |> limit(10)
+      |> Repo.all()
+    end
+
     Chat
-    |> preload(:messages)
+    |> preload( messages: ^messages)
+    |> preload(:users)
     |> Repo.get!(id)
 
   end
 
-  def get_chat_messages!(id) do
+  def get_chat_messages(chat_id) do
     ChatMessage
-    |> where(chat_id: ^id)
+    |> where(chat_id: ^chat_id)
+    |> order_by(desc: :inserted_at)
+    |> limit(10)
     |> Repo.all()
   end
-
 
   @doc """
   Creates a chat.
