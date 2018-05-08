@@ -11,6 +11,7 @@ defmodule ChatApi.API.Chat do
     has_many :messages, ChatApi.API.ChatMessage
     many_to_many :users, ChatApi.API.User, join_through: "chat_users"
 
+    has_one :last_message, ChatApi.API.ChatMessage
     timestamps()
   end
 
@@ -24,7 +25,7 @@ defmodule ChatApi.API.Chat do
 
   defp parse_users(attrs) do
     attrs["users"]
-      |> Enum.map(fn(id) -> ChatApi.API.get_user!(id) end)
+    |> Enum.map(fn (id) -> ChatApi.API.get_user!(id) end)
   end
 
 end

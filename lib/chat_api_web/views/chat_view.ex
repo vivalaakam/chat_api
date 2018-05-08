@@ -15,7 +15,8 @@ defmodule ChatApiWeb.ChatView do
       id: chat.id,
       name: chat.name,
       is_private: chat.is_private,
-      users: render_many(chat.users, ChatApiWeb.UserView, "user.json")
+      users: render_many(chat.users, ChatApiWeb.UserView, "user.json"),
+      last_message: render_one(chat.last_message, ChatApiWeb.MessageView, "message.json")
     }
   end
 

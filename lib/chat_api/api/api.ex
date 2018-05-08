@@ -135,7 +135,10 @@ defmodule ChatApi.API do
            on: c.id == u.chat_id,
            where: u.user_id == ^user.id,
            select: c,
-           preload: [:users]
+           preload: [
+             :users,
+             {:last_message, ^from(c in ChatMessage, order_by: [desc: c.inserted_at])}
+           ]
 
     Repo.all(query)
   end
@@ -161,12 +164,12 @@ defmodule ChatApi.API do
       ChatMessage
       |> where([c], c.chat_id in ^chat_ids)
       |> order_by(desc: :inserted_at)
-      |> limit(10)
+      |> limit(25)
       |> Repo.all()
     end
 
     Chat
-    |> preload( messages: ^messages)
+    |> preload(messages: ^messages)
     |> preload(:users)
     |> Repo.get!(id)
 
@@ -176,7 +179,7 @@ defmodule ChatApi.API do
     ChatMessage
     |> where(chat_id: ^chat_id)
     |> order_by(desc: :inserted_at)
-    |> limit(10)
+    |> limit(25)
     |> Repo.all()
   end
 
