@@ -137,7 +137,15 @@ defmodule ChatApi.API do
            select: c,
            preload: [
              :users,
-             {:last_message, ^from(c in ChatMessage, order_by: [desc: c.inserted_at])}
+             {
+               :last_message,
+               ^from(
+                 c in ChatMessage,
+                 order_by: [
+                   desc: c.inserted_at
+                 ]
+               )
+             }
            ]
 
     Repo.all(query)
@@ -175,9 +183,17 @@ defmodule ChatApi.API do
 
   end
 
-  def get_chat_messages(chat_id) do
+  def get_chat_messages(chat_id, last_message) when last_message == nil do
     ChatMessage
     |> where(chat_id: ^chat_id)
+    |> order_by(desc: :inserted_at)
+    |> limit(25)
+    |> Repo.all()
+  end
+
+  def get_chat_messages(chat_id, last_message) do
+    ChatMessage
+    |> where([c], c.chat_id == ^chat_id and c.inserted_at < ^last_message)
     |> order_by(desc: :inserted_at)
     |> limit(25)
     |> Repo.all()

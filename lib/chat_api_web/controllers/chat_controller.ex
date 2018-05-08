@@ -45,8 +45,8 @@ defmodule ChatApiWeb.ChatController do
     end
   end
 
-  def messages(conn, %{"id" => id}) do
-    messages = API.get_chat_messages(id)
+  def messages(conn, %{"id" => id, "last_message" => last_message}) do
+    messages = API.get_chat_messages(id, last_message)
     render(conn, "messages.json", messages: messages)
   end
 
