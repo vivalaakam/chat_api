@@ -21,10 +21,8 @@ defmodule ChatApiWeb.ChatController do
     hash = Base.encode16(:erlang.md5(hash), case: :lower)
     if chat_params["is_private"] == true do
       chat = API.get_chat_by_hash!(hash)
-      IO.inspect(!chat)
       if !chat do
         chat_params = Map.put(chat_params, "hash", hash)
-        IO.inspect(chat_params)
         with {:ok, %Chat{} = chat} <- API.create_chat(chat_params) do
           create_done(conn, chat)
         end
@@ -74,7 +72,7 @@ defmodule ChatApiWeb.ChatController do
   end
 
   def message(conn, %{"id" => id, "message" => message_params}) do
-    chat = API.get_chat!(id)
+    chat = API.get_chat_with_users!(id)
 
     current_user = conn
                    |> Guardian.Plug.current_resource
@@ -94,6 +92,15 @@ defmodule ChatApiWeb.ChatController do
           sender_id: message.sender_id
         }
       )
+
+      chat = Map.merge(chat, %{last_message: message})
+
+      resp = ChatApiWeb.ChatView.render("chat.json", %{chat: chat})
+
+      IO.inspect(resp)
+
+      chat.users
+      |> Enum.map(fn (user) -> ChatApiWeb.Endpoint.broadcast("user:" <> user.id, "on_chat", resp) end)
 
       conn
       |> put_status(:created)

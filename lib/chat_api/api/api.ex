@@ -167,6 +167,13 @@ defmodule ChatApi.API do
   """
   def get_chat!(id), do: Repo.get!(Chat, id)
 
+  def get_chat_with_users!(id) do
+    Chat
+    |> preload(:users)
+    |> Repo.get!(id)
+  end
+
+
   def get_chat_by_hash!(hash) do
     Repo.one(
       Chat

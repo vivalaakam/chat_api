@@ -4,6 +4,7 @@ defmodule ChatApiWeb.UserSocket do
 
 
   channel "chat:*", ChatApiWeb.ChatChannel
+  channel "user:*", ChatApiWeb.UserChannel
   transport :websocket, Phoenix.Transports.WebSocket
 
   def connect(%{"guardian_token" => jwt} = params, socket) do
