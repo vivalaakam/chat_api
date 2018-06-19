@@ -1,6 +1,8 @@
 defmodule ChatApiWeb.Router do
   use ChatApiWeb, :router
 
+  require Ueberauth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -29,8 +31,14 @@ defmodule ChatApiWeb.Router do
     post "/auth_fb", AuthController, :auth_fb
     delete "/logout", AuthController, :logout
 
+    pipe_through [:csrf]
+
+    get "/auth/:provider", AuthController, :request
+    get "/auth/:provider/callback", AuthController, :callback
+
     pipe_through [:auth]
     get "/me", AuthController, :me
+
 
   end
 

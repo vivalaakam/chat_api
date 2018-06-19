@@ -49,3 +49,15 @@ config :guardian,
        secret_key: "ednkXywWll1d2svDEpbA39R5kfkc9l96j0+u7A8MgKM+pbwbeDsuYB8MP2WUW1hf",
          # Insert previously generated secret key!
        serializer: ChatApi.Auth.GuardianSerializer
+
+
+config :ueberauth,
+       Ueberauth,
+       providers: [
+         facebook: {Ueberauth.Strategy.Facebook, []}
+       ]
+
+
+config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
+       client_id: System.get_env("FACEBOOK_CLIENT_ID"),
+       client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")

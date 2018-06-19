@@ -1,0 +1,12 @@
+ <pre id="info">
+ <%= Phoenix.View.render(ChatApiWeb.AuthView, "user.json", user: @user, token: @token) |> Poison.encode!(pretty: true) %>
+ </pre>
+
+<script type="text/javascript" charset="utf-8">
+    if (window.opener) {
+      var info = document.getElementById('info')
+      window.opener.postMessage(JSON.parse(info), '*')
+    } else {
+      window.close()
+    }
+</script>
