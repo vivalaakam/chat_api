@@ -47,6 +47,7 @@ defmodule ChatApi.Mixfile do
       {:bcrypt_elixir, "~> 1.0"},
       {:oauth2, "~> 0.8", override: true},
       {:ueberauth, "~> 0.4"},
+      {:cors_plug, "~> 1.5"},
       {:ueberauth_facebook, "~> 0.5"}
     ]
   end

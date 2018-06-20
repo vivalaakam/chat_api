@@ -5,7 +5,7 @@
 <script type="text/javascript" charset="utf-8">
     if (window.opener) {
       var info = document.getElementById('info')
-      window.opener.postMessage(JSON.parse(info), '*')
+      window.opener.postMessage(JSON.parse(info.innerText), '*')
     } else {
       window.close()
     }
