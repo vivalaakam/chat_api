@@ -28,7 +28,7 @@ config :chat_api, ChatApiWeb.Endpoint,
   url: [scheme: "https", host: "vivalaakam-chat.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/manifest.json",
-  check_origin: ["//vivalaakam-chat.herokuapp.com"],
+  check_origin: ["//vivalaakam-chat.herokuapp.com", "http://localhost:3000"],
   secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 # Do not print debug messages in production
