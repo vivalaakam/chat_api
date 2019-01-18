@@ -28,6 +28,7 @@ defmodule ChatApiWeb.Router do
     pipe_through [:browser, :api] # Use the default browser stack
 
     get "/", PageController, :index
+    get "/terms", PageController, :terms
     post "/auth_fb", AuthController, :auth_fb
     delete "/logout", AuthController, :logout
 
