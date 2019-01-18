@@ -97,10 +97,42 @@ defmodule ChatApiWeb.ChatController do
 
       resp = ChatApiWeb.ChatView.render("chat.json", %{chat: chat})
 
-      IO.inspect(resp)
-
       chat.users
       |> Enum.map(fn (user) -> ChatApiWeb.Endpoint.broadcast("user:" <> user.id, "on_chat", resp) end)
+
+      chat.users
+      |> Enum.map(
+           fn (user) ->
+             if user.id != current_user.id do
+               API.list_user_subscriptions(user)
+               |> Enum.map(
+                    fn (subscription) ->
+                      subs = Poison.decode!(subscription.subscription)
+                      {:ok, response} = WebPushEncryption.send_web_push(
+                        Poison.encode!(
+                          %{
+                            title: current_user.name,
+                            body: message.message,
+                            id: message.id,
+                            message: message.message,
+                            inserted_at: message.inserted_at,
+                            sender_id: message.sender_id
+                          }
+                        ),
+                        %{
+                          keys: %{
+                            p256dh: subs["keys"]["p256dh"],
+                            auth: subs["keys"]["auth"]
+                          },
+                          endpoint: subs["endpoint"]
+                        },
+                        System.get_env("VAPID_PRIVATE_KEY")
+                      )
+                    end
+                  )
+             end
+           end
+         )
 
       conn
       |> put_status(:created)

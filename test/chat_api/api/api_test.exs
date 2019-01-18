@@ -124,4 +124,66 @@ defmodule ChatApi.APITest do
       assert %Ecto.Changeset{} = API.change_chat(chat)
     end
   end
+
+  describe "user_subscription" do
+    alias ChatApi.API.UserSubscrions
+
+    @valid_attrs %{source: "some source", subscription: "some subscription"}
+    @update_attrs %{source: "some updated source", subscription: "some updated subscription"}
+    @invalid_attrs %{source: nil, subscription: nil}
+
+    def user_subscrions_fixture(attrs \\ %{}) do
+      {:ok, user_subscrions} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> API.create_user_subscrions()
+
+      user_subscrions
+    end
+
+    test "list_user_subscription/0 returns all user_subscription" do
+      user_subscrions = user_subscrions_fixture()
+      assert API.list_user_subscription() == [user_subscrions]
+    end
+
+    test "get_user_subscrions!/1 returns the user_subscrions with given id" do
+      user_subscrions = user_subscrions_fixture()
+      assert API.get_user_subscrions!(user_subscrions.id) == user_subscrions
+    end
+
+    test "create_user_subscrions/1 with valid data creates a user_subscrions" do
+      assert {:ok, %UserSubscrions{} = user_subscrions} = API.create_user_subscrions(@valid_attrs)
+      assert user_subscrions.source == "some source"
+      assert user_subscrions.subscription == "some subscription"
+    end
+
+    test "create_user_subscrions/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = API.create_user_subscrions(@invalid_attrs)
+    end
+
+    test "update_user_subscrions/2 with valid data updates the user_subscrions" do
+      user_subscrions = user_subscrions_fixture()
+      assert {:ok, user_subscrions} = API.update_user_subscrions(user_subscrions, @update_attrs)
+      assert %UserSubscrions{} = user_subscrions
+      assert user_subscrions.source == "some updated source"
+      assert user_subscrions.subscription == "some updated subscription"
+    end
+
+    test "update_user_subscrions/2 with invalid data returns error changeset" do
+      user_subscrions = user_subscrions_fixture()
+      assert {:error, %Ecto.Changeset{}} = API.update_user_subscrions(user_subscrions, @invalid_attrs)
+      assert user_subscrions == API.get_user_subscrions!(user_subscrions.id)
+    end
+
+    test "delete_user_subscrions/1 deletes the user_subscrions" do
+      user_subscrions = user_subscrions_fixture()
+      assert {:ok, %UserSubscrions{}} = API.delete_user_subscrions(user_subscrions)
+      assert_raise Ecto.NoResultsError, fn -> API.get_user_subscrions!(user_subscrions.id) end
+    end
+
+    test "change_user_subscrions/1 returns a user_subscrions changeset" do
+      user_subscrions = user_subscrions_fixture()
+      assert %Ecto.Changeset{} = API.change_user_subscrions(user_subscrions)
+    end
+  end
 end

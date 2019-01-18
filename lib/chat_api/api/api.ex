@@ -284,4 +284,102 @@ defmodule ChatApi.API do
   def change_chat(%Chat{} = chat) do
     Chat.changeset(chat, %{})
   end
+
+  alias ChatApi.API.UserSubscription
+
+  @doc """
+  Returns the list of user_subscription.
+
+  ## Examples
+
+      iex> list_user_subscription(user)
+      [%UserSubscriptions{}, ...]
+
+  """
+  def list_user_subscriptions(%User{} = user) do
+    UserSubscription
+    |> where(user_id: ^user.id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single user_subscriptions.
+
+  Raises `Ecto.NoResultsError` if the User subscriptions does not exist.
+
+  ## Examples
+
+      iex> get_user_subscriptions!(123)
+      %UserSubscriptions{}
+
+      iex> get_user_subscriptions!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_user_subscription!(id), do: Repo.get!(UserSubscription, id)
+
+  @doc """
+  Creates a user_subscriptions.
+
+  ## Examples
+
+      iex> create_user_subscriptions(%{field: value})
+      {:ok, %UserSubscriptions{}}
+
+      iex> create_user_subscriptions(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_user_subscription(attrs \\ %{}) do
+    %UserSubscription{}
+    |> UserSubscription.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a user_subscriptions.
+
+  ## Examples
+
+      iex> update_user_subscriptions(user_subscriptions, %{field: new_value})
+      {:ok, %UserSubscriptions{}}
+
+      iex> update_user_subscriptions(user_subscriptions, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_user_subscription(%UserSubscription{} = user_subscription, attrs) do
+    user_subscription
+    |> UserSubscription.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a UserSubscriptions.
+
+  ## Examples
+
+      iex> delete_user_subscriptions(user_subscriptions)
+      {:ok, %UserSubscriptions{}}
+
+      iex> delete_user_subscriptions(user_subscriptions)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_user_subscription(%UserSubscription{} = user_subscription) do
+    Repo.delete(user_subscription)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user_subscriptions changes.
+
+  ## Examples
+
+      iex> change_user_subscriptions(user_subscriptions)
+      %Ecto.Changeset{source: %UserSubscriptions{}}
+
+  """
+  def change_user_subscription(%UserSubscription{} = user_subscription) do
+    UserSubscription.changeset(user_subscription, %{})
+  end
 end

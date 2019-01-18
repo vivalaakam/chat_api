@@ -39,6 +39,7 @@ defmodule ChatApi.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
+      {:poison, "~> 3.1", override: true},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:guardian, "~> 0.14.2"},
@@ -48,6 +49,7 @@ defmodule ChatApi.Mixfile do
       {:oauth2, "~> 0.8", override: true},
       {:ueberauth, "~> 0.4"},
       {:cors_plug, "~> 1.5"},
+      {:web_push_encryption, "~> 0.2.1"},
       {:ueberauth_facebook, "~> 0.5"}
     ]
   end

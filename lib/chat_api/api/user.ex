@@ -7,6 +7,7 @@ defmodule ChatApi.API.User do
     field :fb_token, :string
 
     many_to_many :chats,  ChatApi.API.Chat, join_through: "chat_users"
+    has_many :subscriptions, ChatAPI.UserSubscription
 
     timestamps()
   end

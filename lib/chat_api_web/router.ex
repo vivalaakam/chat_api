@@ -48,6 +48,7 @@ defmodule ChatApiWeb.Router do
     post "/chats/:id/message", ChatController, :message
     get "/chats/:id/messages", ChatController, :messages
     resources "/chats", ChatController, except: [:new, :edit]
+    resources "/subscription", UserSubscriptionController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.
