@@ -54,15 +54,22 @@ config :guardian,
 config :ueberauth,
        Ueberauth,
        providers: [
-         facebook: {Ueberauth.Strategy.Facebook, []}
+         facebook: {Ueberauth.Strategy.Facebook, []},
+         google: {Ueberauth.Strategy.Google, []}
        ]
 
-
-config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
+config :ueberauth,
+       Ueberauth.Strategy.Facebook.OAuth,
        client_id: System.get_env("FACEBOOK_CLIENT_ID"),
        client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")
 
-config :web_push_encryption, :vapid_details,
+config :ueberauth,
+       Ueberauth.Strategy.Google.OAuth,
+       client_id: System.get_env("GOOGLE_CLIENT_ID"),
+       client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
+config :web_push_encryption,
+       :vapid_details,
        subject: "viva.la.akam@gmail.com",
        public_key: System.get_env("VAPID_PUBLIC_KEY"),
        private_key: System.get_env("VAPID_PRIVATE_KEY")

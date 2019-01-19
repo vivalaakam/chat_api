@@ -69,14 +69,19 @@ defmodule ChatApiWeb.AuthController do
             ueberauth_auth: auth
           }
         } = conn,
-        _params
+        %{"provider" => provider}
       ) do
 
     conn = put_layout conn, false
 
-    user = API.get_fb_user(auth.uid)
-
-    user_params = %{fb_id: auth.uid, name: auth.info.name, fb_token: auth.credentials.token}
+    case provider do
+      "facebook" ->
+        user = API.get_fb_user(auth.uid)
+        user_params = %{fb_id: auth.uid, name: auth.info.name, fb_token: auth.credentials.token}
+      "google" ->
+        user = API.get_google_user(auth.uid)
+        user_params = %{google_id: auth.uid, name: auth.info.name, google_token: auth.credentials.token}
+    end
     auth(conn, user, user_params, "close.html")
   end
 end

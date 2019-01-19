@@ -50,7 +50,8 @@ defmodule ChatApi.Mixfile do
       {:ueberauth, "~> 0.4"},
       {:cors_plug, "~> 1.5"},
       {:web_push_encryption, "~> 0.2.1"},
-      {:ueberauth_facebook, "~> 0.5"}
+      {:ueberauth_facebook, "~> 0.5"},
+      {:ueberauth_google, "~> 0.5"}
     ]
   end
 

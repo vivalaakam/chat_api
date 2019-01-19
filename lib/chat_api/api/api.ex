@@ -47,6 +47,13 @@ defmodule ChatApi.API do
         |> limit(1)
       )
 
+  def get_google_user(google_id),
+      do: Repo.one(
+        User
+        |> where(google_id: ^google_id)
+        |> limit(1)
+      )
+
   @doc """
   Creates a user.
 
