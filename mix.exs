@@ -20,7 +20,15 @@ defmodule ChatApi.Mixfile do
   def application do
     [
       mod: {ChatApi.Application, []},
-      extra_applications: [:logger, :runtime_tools, :comeonin, :ueberauth, :ueberauth_facebook]
+      extra_applications: [
+        :logger,
+        :runtime_tools,
+        :comeonin,
+        :ueberauth,
+        :ueberauth_facebook,
+        :ueberauth_google,
+        :ueberauth_identity
+      ]
     ]
   end
 
@@ -51,7 +59,8 @@ defmodule ChatApi.Mixfile do
       {:cors_plug, "~> 1.5"},
       {:web_push_encryption, "~> 0.2.1"},
       {:ueberauth_facebook, "~> 0.5"},
-      {:ueberauth_google, "~> 0.5"}
+      {:ueberauth_google, "~> 0.5"},
+      {:ueberauth_identity, "~> 0.2"}
     ]
   end
 

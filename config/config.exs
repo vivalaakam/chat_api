@@ -55,7 +55,10 @@ config :ueberauth,
        Ueberauth,
        providers: [
          facebook: {Ueberauth.Strategy.Facebook, []},
-         google: {Ueberauth.Strategy.Google, []}
+         google: {Ueberauth.Strategy.Google, []},
+         identity: {Ueberauth.Strategy.Identity, [
+           callback_methods: ["POST"]
+         ]}
        ]
 
 config :ueberauth,

@@ -1,1 +1,58 @@
 /* This file is for your main application css. */
+
+.Auth .control-group {
+    margin-bottom: 15px;
+}
+
+.Auth .links {
+    display: flex;
+    flex-direction: row;
+    margin: 0 -7.5px;
+}
+
+.Auth .Btn {
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .12), 0 1px 11px 0 rgba(0, 0, 0, .24);
+    padding: 8px 18px;
+    vertical-align: top;
+    font: 14px Helvetica Neue, Helvetica, Arial, sans-serif;
+    margin: 0 7.5px;
+    flex: 1 1;
+    text-align: center;
+
+    border: 1px solid #474f60;
+    background-color: #474f60;
+    color: #fff
+}
+
+.Auth .Btn:hover {
+    text-decoration: none;
+    background-color: #e1e4e9;
+    color: #474f60
+}
+
+.Auth .Btn.facebook {
+    border: 1px solid #4267b2;
+    background-color: #4267b2;
+    color: #fff;
+}
+
+.Auth .Btn.facebook:hover {
+    background-color: #e2e8f4;
+    color: #4267b2;
+}
+
+
+.Auth .Btn.google {
+    border: 1px solid #dc4e41;
+    background-color: #dc4e41;
+    color: #fff;
+}
+
+
+.Auth .Btn.google:hover {
+    background-color: #fae4e3;
+    color: #dc4e41;
+}

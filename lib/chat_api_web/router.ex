@@ -35,6 +35,7 @@ defmodule ChatApiWeb.Router do
     pipe_through [:csrf]
 
     get "/auth/:provider", AuthController, :request
+    post "/auth/identity/callback", AuthController, :identity_callback
     get "/auth/:provider/callback", AuthController, :callback
 
     pipe_through [:auth]

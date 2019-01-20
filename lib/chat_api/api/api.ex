@@ -4,6 +4,7 @@ defmodule ChatApi.API do
   """
 
   import Ecto.Query, warn: false
+  alias Comeonin.Bcrypt
   alias ChatApi.Repo
 
   alias ChatApi.API.User
@@ -53,6 +54,22 @@ defmodule ChatApi.API do
         |> where(google_id: ^google_id)
         |> limit(1)
       )
+
+  def get_email_user(email),
+      do: Repo.one(
+        User
+        |> where(email: ^email)
+        |> limit(1)
+      )
+
+  def check_password(nil, _), do: {:error, "Incorrect username or password"}
+  def check_password(user, plain_text_password) do
+    case Bcrypt.checkpw(plain_text_password, user.password) do
+      true -> {:ok, user}
+      false -> {:error, "Incorrect username or password"}
+    end
+  end
+
 
   @doc """
   Creates a user.

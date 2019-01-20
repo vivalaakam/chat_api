@@ -47,6 +47,8 @@ defmodule ChatApiWeb.AuthController do
   end
 
   def request(conn, _params) do
+
+    conn = put_layout conn, "auth.html"
     render(conn, "request.html", callback_url: Helpers.callback_url(conn))
   end
 
@@ -83,5 +85,34 @@ defmodule ChatApiWeb.AuthController do
         user_params = %{google_id: auth.uid, name: auth.info.name, google_token: auth.credentials.token}
     end
     auth(conn, user, user_params, "close.html")
+  end
+
+  def identity_callback(
+        %{
+          assigns: %{
+            ueberauth_auth: auth
+          }
+        } = conn,
+        _params
+      ) do
+    IO.inspect(auth)
+    user = API.get_email_user(auth.uid)
+
+    unless user do
+      user_params = %{email: auth.uid, name: auth.uid, password: auth.credentials.other.password}
+      conn = put_layout conn, false
+      auth(conn, user, user_params, "close.html")
+    end
+
+
+    case API.check_password(user, auth.credentials.other.password) do
+      {:ok, user} ->
+        conn = put_layout conn, false
+        auth(conn, user, %{}, "close.html")
+      {:error, reason} ->
+        conn
+        |> put_flash(:error, reason)
+        |> redirect(to: "/auth/identity")
+    end
   end
 end

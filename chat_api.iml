@@ -9,6 +9,7 @@
       <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/httpoison" />
       <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/ssl_verify_fun" />
       <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/ueberauth_google" />
+      <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/ueberauth_identity" />
       <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/web_push_encryption" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -78,5 +79,7 @@
     <orderEntry type="library" name="meck" level="project" />
     <orderEntry type="library" name="mimic" level="project" />
     <orderEntry type="library" name="ueberauth_google" level="project" />
+    <orderEntry type="library" name="ueberauth_identity" level="project" />
+    <orderEntry type="library" name="dogma" level="project" />
   </component>
 </module>
